@@ -1,5 +1,7 @@
 package jdtalley.spclaims;
 
+import jdtalley.spclaims.item.ModItems;
+import jdtalley.spclaims.item.ModItemsGroups;
 import net.fabricmc.api.ModInitializer;
 
 import org.slf4j.Logger;
@@ -11,6 +13,7 @@ public class SinglePlayerClaims implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		LOGGER.info("Hello Fabric world!");
+		ModItemsGroups.registerItemGroups();
+		ModItems.registerModItems();
 	}
 }

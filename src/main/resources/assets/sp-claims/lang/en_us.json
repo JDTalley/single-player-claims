@@ -1,0 +1,10 @@
+{
+  "item.sp-claims.wooden_scepter": "Wooden Scepter",
+  "item.sp-claims.stone_scepter": "Stone Scepter",
+  "item.sp-claims.iron_scepter": "Iron Scepter",
+  "item.sp-claims.golden_scepter": "Golden Scepter",
+  "item.sp-claims.diamond_scepter": "Diamond Scepter",
+  "item.sp-claims.netherite_scepter": "Netherite Scepter",
+
+  "itemgroup.spclaims": "SP Claim Items"
+}
