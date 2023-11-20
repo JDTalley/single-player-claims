@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "  #",
+    " s ",
+    "s  "
+  ],
+  "key": {
+    "s": {
+      "item": "minecraft:stick"
+    },
+    "#": {
+      "item": "minecraft:gold_block"
+    }
+  },
+  "result": {
+    "item": "sp-claims:golden_scepter"
+  }
+}

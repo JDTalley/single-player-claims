@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "  #",
+    " s ",
+    "s  "
+  ],
+  "key": {
+    "s": {
+      "item": "minecraft:stick"
+    },
+    "#": {
+      "item": "minecraft:netherite_block"
+    }
+  },
+  "result": {
+    "item": "sp-claims:netherite_scepter"
+  }
+}
