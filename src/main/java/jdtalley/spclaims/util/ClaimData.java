@@ -1,33 +1,36 @@
 package jdtalley.spclaims.util;
 
+import jdtalley.spclaims.networking.ModMessages;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.math.ChunkPos;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.server.network.ServerPlayerEntity;
 
 public class ClaimData {
-    public static boolean addClaim(IEntityDataSaver player, ChunkPos chunkPos) {
+    public static long addClaim(IEntityDataSaver player, long claimedChunk) {
         NbtCompound nbt = player.getPersistentData();
         NbtCompound claims = nbt.getCompound("claims");
 
-        if (claims.contains(String.valueOf(chunkPos.toLong()))) {
-            return false;
-        }
-
-        claims.putLong(String.valueOf(chunkPos.toLong()), chunkPos.toLong());
+        claims.putLong(String.valueOf(claimedChunk), claimedChunk);
 
         nbt.put("claims", claims);
 
-        return true;
+        syncClaims(claimedChunk, (ServerPlayerEntity) player);
+
+        return claimedChunk;
     }
 
-    public static String getClaims(IEntityDataSaver player) {
+    public static boolean isChunkOwned(IEntityDataSaver player, long chunkPos) {
         NbtCompound nbt = player.getPersistentData();
         NbtCompound claims = nbt.getCompound("claims");
-        StringBuffer chunks = new StringBuffer(claims.getSize());
 
-        claims.getKeys().forEach(key -> {
-            chunks.append(claims.getLong(key));
-        });
+        return claims.contains(String.valueOf(chunkPos));
+    }
 
-        return chunks.toString();
+    public static void syncClaims (long claimedChunk, ServerPlayerEntity player) {
+        PacketByteBuf buffer = PacketByteBufs.create();
+        buffer.writeLong(claimedChunk);
+        ServerPlayNetworking.send(player, ModMessages.CLAIM_SYNC_ID, buffer);
     }
 }

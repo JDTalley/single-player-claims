@@ -1,11 +1,11 @@
 package jdtalley.spclaims.item.custom;
 
-import jdtalley.spclaims.util.ClaimData;
-import jdtalley.spclaims.util.IEntityDataSaver;
-import net.minecraft.entity.player.PlayerEntity;
+import jdtalley.spclaims.networking.ModMessages;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemUsageContext;
-import net.minecraft.text.Text;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.math.ChunkPos;
 
@@ -18,9 +18,14 @@ public class ClaimItem extends Item {
 
     @Override
     public ActionResult useOnBlock(ItemUsageContext context) {
+
+
         if(context.getWorld().isClient()) {
             ChunkPos chunkPos = context.getWorld().getChunk(context.getBlockPos()).getPos();
-            PlayerEntity player = context.getPlayer();
+            PacketByteBuf buffer = PacketByteBufs.create();
+            buffer.writeLong(chunkPos.toLong());
+            ClientPlayNetworking.send(ModMessages.CLAIMING_ID, buffer);
+            /*PlayerEntity player = context.getPlayer();
 
             boolean claimResult = ClaimData.addClaim((IEntityDataSaver) player, chunkPos);
             
@@ -33,7 +38,7 @@ public class ClaimItem extends Item {
                         playerEntity -> playerEntity.sendToolBreakStatus(playerEntity.getActiveHand()));
             }
 
-            player.sendMessage(Text.literal(ClaimData.getClaims((IEntityDataSaver) player)), false);
+            player.sendMessage(Text.literal(ClaimData.getClaims((IEntityDataSaver) player)), false);*/
         }
 
         return ActionResult.SUCCESS;
