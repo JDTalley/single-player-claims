@@ -17,6 +17,7 @@ public class ClaimingC2SPacket {
                                PacketByteBuf buf, PacketSender responseSender) {
         // Server only code
         ChunkPos chunkPos = new ChunkPos(buf.readLong());
+
         if (ClaimData.isChunkOwned((IEntityDataSaver) player, chunkPos.toLong())) {
             player.sendMessage(Text.literal("Chunk " + chunkPos + " Already Claimed!")
                     .fillStyle(Style.EMPTY.withColor(Formatting.GOLD)), false);
@@ -25,6 +26,9 @@ public class ClaimingC2SPacket {
 
             player.sendMessage(Text.literal("Chunk " + chunkPos + " Now Claimed!")
                     .fillStyle(Style.EMPTY.withColor(Formatting.GOLD)), false);
+
+            player.getMainHandStack().damage(1, player,
+                    serverPlayerEntity -> serverPlayerEntity.sendToolBreakStatus((serverPlayerEntity.getActiveHand())));
         }
     }
 }
